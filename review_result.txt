@@ -1,0 +1,38 @@
+ ### Some suggestions for improving the code:
+
+- **Use the `csv` module's `DictReader` instead of `csv.reader`**:  The `csv.DictReader` can automatically map the CSV columns to a dictionary, eliminating the need for the manual mapping in the `for` loop. This simplifies the code and reduces the chance of errors.
+
+- **Use a `with` statement to open both the CSV and JSON files**: This ensures that the files are automatically closed, even if an exception occurs, preventing resource leaks.
+
+- **Consider using `json.load()` and `json.dump()` instead of `json.dumps()` and `json.write()`: These functions are more efficient for reading and writing JSON data, respectively.
+
+Here's an optimized version of the code incorporating these suggestions:
+
+```python
+import csv
+import json
+
+# Read the CSV file
+with open('sample_test_data.csv', 'r') as csv_file:
+    # Create a CSV reader object
+    csv_reader = csv.DictReader(csv_file)
+
+    # Get the column headers
+    headers = csv_reader.fieldnames
+
+    # Create an empty list to store the JSON data
+    json_data = []
+
+    # Iterate over the rows in the CSV file
+    for row in csv_reader:
+        # Add the row data to the list of JSON data
+        json_data.append(row)
+
+# Save the JSON data to a file
+with open('sample_test_data.json', 'w') as json_file:
+    # Convert the list of dictionaries to a JSON string
+    json_string = json.dumps(json_data)
+
+    # Write the JSON string to the file
+    json_file.write(json_string)
+```
